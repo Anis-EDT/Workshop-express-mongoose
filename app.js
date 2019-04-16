@@ -6,6 +6,8 @@ var logger = require('morgan');
 var db = require('./config/dbConnect')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const passport = require('passport')
+const jwt = require('jsonwebtoken')
 
 var app = express();
 
@@ -36,5 +38,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+app.use(passport.initialize())
+
 
 module.exports = app;

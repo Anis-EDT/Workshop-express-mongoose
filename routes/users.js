@@ -1,16 +1,20 @@
 var express = require('express');
 var router = express.Router();
+const bcrypt = require('bcrypt')
 const User = require('../schemas/userSchema')
+const AuthController = require('../controller/AuthController')
+const passport = require('passport')
+
+require('../config/passport')(passport) // as strategy in ./passport.js needs passport object
 
 
+router.post('/register', AuthController.resgiter)
+router.post('/login', AuthController.login)
 
-router.get('/',function(req,res){
-  console.log('heyyy')
-  User.find().then((u)=>{
-    console.log('heyy') 
-     res.send(u)
-  })
-  .catch((err)=> res.send(err))
+
+router.get('/',passport.authenticate('jwt' , {session : false}),function(req,res){
+
+  res.send(req.user)
 })
 
 
